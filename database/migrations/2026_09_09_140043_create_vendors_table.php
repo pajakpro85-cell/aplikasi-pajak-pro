@@ -22,7 +22,6 @@ return new class extends Migration
             ]);
             $table->string('tax_id_luar_negeri', 100)->nullable();
             $table->string('negara_domisili', 100)->nullable();
-            $table->timestamps();
         });
     }
 

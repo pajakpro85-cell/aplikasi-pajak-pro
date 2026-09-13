@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('kode_objek', 100);
             $table->string('nama_objek', 100);
             $table->text('deskripsi')->nullable();
+            $table->string('dasar_hukum', 100);
             $table->decimal('tarif', 5, 2);
             $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
             $table->timestamp('created_at')->useCurrent();

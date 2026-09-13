@@ -20,7 +20,8 @@ return new class extends Migration
             $table->string('keterangan', 255);
             $table->decimal('debit', 15, 2);
             $table->decimal('credit', 15, 2);
-            $table->timestamps();
+             $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 

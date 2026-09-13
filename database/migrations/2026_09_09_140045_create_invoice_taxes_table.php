@@ -18,7 +18,6 @@ return new class extends Migration
             $table->decimal('tarif', 5, 2);
             $table->decimal('nilai_pph', 15, 2);
             $table->enum('metode_beban', ['normal', 'gross_up']);
-            $table->timestamps();
         });
     }
 

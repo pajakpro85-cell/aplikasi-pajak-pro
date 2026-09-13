@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('nama_pejabat', 100);
             $table->string('jabatan', 100);
             $table->enum('metode_default', ['normal', 'gross_up']);
-            $table->timestamps();
         });
     }
 

@@ -27,7 +27,6 @@ return new class extends Migration
             ]);
             $table->text('keterangan_pekerjaan')->nullable();
             $table->string('fasilitas_perpajakan', 100)->default('Tanpa Fasilitas (Tarif Normal)');
-            $table->timestamps();
         });
     }
 
