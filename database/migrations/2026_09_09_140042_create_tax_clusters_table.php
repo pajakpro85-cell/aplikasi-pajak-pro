@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tax_clusters', function (Blueprint $table) {
             $table->id('id_cluster');
             $table->string('nama_cluster', 100);
-            $table->string('deskripsi', 100);
+            $table->string('dasar_regulasi', 100);
         });
     }
 
