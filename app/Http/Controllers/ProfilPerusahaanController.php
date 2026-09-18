@@ -2,63 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProfilPerusahaan;
 use Illuminate\Http\Request;
 
 class ProfilPerusahaanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $profil = ProfilPerusahaan::first();
+
+        return view('profil_perusahaan.index', compact('profil'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function edit()
     {
-        //
+        $profil = ProfilPerusahaan::first();
+
+        return view('profil_perusahaan.edit', compact('profil'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function update(Request $request)
     {
-        //
-    }
+        $validated = $request->validate([
+            'nama_perusahaan' => 'required|string|max:255',
+            'npwp' => 'nullable|string|max:50',
+            'alamat' => 'nullable|string',
+            'nama_pejabat' => 'nullable|string|max:255',
+            'jabatan' => 'nullable|string|max:100',
+            'metode_Default' => 'nullable|string|max:50',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        $profil = ProfilPerusahaan::first();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        if ($profil) {
+            $profil->update($validated);
+        } else {
+            ProfilPerusahaan::create($validated);
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()
+            ->route('profil-perusahaan.index')
+            ->with('success', 'Profil perusahaan berhasil diperbarui.');
     }
 }
