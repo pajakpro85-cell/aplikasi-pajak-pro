@@ -16,36 +16,36 @@ class AuthController extends Controller
     }
 
     /**
-     * Memproses login Admin.
+     * Memproses login.
      */
     public function login(Request $request)
     {
         // Validasi input login
         $credentials = $request->validate([
-            'email' => 'required|email',
+            'username' => 'required',
             'password' => 'required',
         ]);
 
-        // Cek email dan password
+        // Cek username dan password
         if (Auth::attempt($credentials)) {
 
             // Membuat ulang session setelah login berhasil
             $request->session()->regenerate();
 
-            // Mengarahkan Admin ke dashboard
+            // Mengarahkan user ke dashboard
             return redirect()->route('dashboard');
         }
 
         // Jika login gagal
         return back()
             ->withErrors([
-                'email' => 'Email atau password salah.',
+                'username' => 'Username atau password salah.',
             ])
             ->withInput();
     }
 
     /**
-     * Memproses logout Admin.
+     * Memproses logout.
      */
     public function logout(Request $request)
     {
