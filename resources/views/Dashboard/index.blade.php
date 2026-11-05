@@ -132,7 +132,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                         </div>
                         <div>
-                            <p class="text-xs font-semibold tracking-wide text-slate-500">TOTAL NILAI TAGIHAN (DPP)</p>
+                            <p class="text-xs font-semibold tracking-wide text-slate-500">TOTAL POTONGAN PPH</p>
                             <p class="text-lg font-bold text-slate-900 font-mono mt-1">IDR 47.950.000</p>
                             <p class="text-xs text-slate-400 mt-0.5">4 Tagihan Terhitung</p>
                         </div>
@@ -143,7 +143,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
                         </div>
                         <div>
-                            <p class="text-xs font-semibold tracking-wide text-slate-500">TOTAL NILAI TAGIHAN (DPP)</p>
+                            <p class="text-xs font-semibold tracking-wide text-slate-500">TOTAL BERSIH DITRANSFER</p>
                             <p class="text-lg font-bold text-slate-900 font-mono mt-1">IDR 625 jt</p>
                             <p class="text-xs text-slate-400 mt-0.5">IDR 646.010.000</p>
                         </div>
@@ -154,7 +154,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-purple-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 6-6 4 4 8-8"/><path d="M17 7h4v4"/></svg>
                         </div>
                         <div>
-                            <p class="text-xs font-semibold tracking-wide text-slate-500">TOTAL NILAI TAGIHAN (DPP)</p>
+                            <p class="text-xs font-semibold tracking-wide text-slate-500">POTONGAN PPH (YTD)</p>
                             <p class="text-lg font-bold text-slate-900 font-mono mt-1">IDR 625 jt</p>
                             <p class="text-xs text-slate-400 mt-0.5">Tahun 2026 &bull; 4 Klien Aktif</p>
                         </div>
