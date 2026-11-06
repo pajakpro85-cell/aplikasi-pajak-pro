@@ -25,24 +25,49 @@ document.addEventListener('alpine:init', () => {
         ],
 
         klasterList: [
-            { code: '23', label: 'Pph 23', desc: 'Jasa & Sewa Harta' },
-            { code: '4(2)', label: 'Pph 4(2)', desc: 'Sewa Gedung & Tanah' },
-            { code: '22', label: 'Pph 22', desc: 'Pengadaan Barang' },
-            { code: '15', label: 'Pph 15', desc: 'Pelayaran & Penerbangan' },
-            { code: '26', label: 'Pph 26', desc: 'WP Luar Negeri' },
+            { code: '23', label: 'Pph 23', desc: 'Jasa & Sewa Harta', dasarHukum: 'PMK-141/PMK.03/2015 & PER-24/PJ/2021' },
+            { code: '4(2)', label: 'Pph 4(2)', desc: 'Sewa Gedung & Tanah', dasarHukum: 'UU PPh Pasal 4 ayat (2) Final & PER-24/PJ/2021' },
+            { code: '22', label: 'Pph 22', desc: 'Pengadaan Barang', dasarHukum: 'UU PPh Pasal 22 / PMK-34/2017 & PER-24/PJ/2021' },
+            { code: '15', label: 'Pph 15', desc: 'Pelayaran & Penerbangan', dasarHukum: 'UU PPh Pasal 15 Norma Khusus & PER-24/PJ/2021' },
+            { code: '26', label: 'Pph 26', desc: 'WP Luar Negeri', dasarHukum: 'UU PPh Pasal 26 / P3B Tax Treaty & PER-24/PJ/2021' },
         ],
 
+        // Setiap KOP terikat ke satu klaster PPh (field `klaster` = code klaster di atas)
         kopList: [
-            { code: '24-104-01', desc: 'Jasa Manajemen, Jasa Konsultasi, Jasa Teknik & Jasa Lainnya', tarif: 2 },
-            { code: '24-104-02', desc: 'Jasa Perawatan / Pemeliharaan/ Perbaikan Mesin & Bangunan', tarif: 2 },
-            { code: '24-104-03', desc: 'Jasa kebersihan (Cleaning Service) & Keamanan (Security)', tarif: 2 },
-            { code: '24-104-04', desc: 'Jasa IT, Software Development, Server & Maintenance Web', tarif: 2 },
-            { code: '24-104-05', desc: 'Jasa Freight Forwarding, Logistik & Ekspedisi Pengiriman', tarif: 2 },
-            { code: '24-102-01', desc: 'Sewa & Penggunaan Harta (Selain Tanah dan/atau Bangunan)', tarif: 2 },
-            { code: '24-100-01', desc: 'Dividen Diterima Wajib Pajak Badan Dalam Negeri', tarif: 15 },
-            { code: '24-101-01', desc: 'Bunga Pinjaman (Selain Bunga Bank)', tarif: 15 },
-            { code: '24-103-01', desc: 'Royalti atas Penggunaan Hak Cipta, Paten, Merek Dagang', tarif: 15 },
-            { code: '24-105-01', desc: 'Hadiah, Penghargaan & Bonus Selain PPh 21', tarif: 15 },
+            // --- PPh 23 ---
+            { klaster: '23', code: '24-104-01', desc: 'Jasa Manajemen, Jasa Konsultasi, Jasa Teknik & Jasa Lainnya', tarif: 2 },
+            { klaster: '23', code: '24-104-02', desc: 'Jasa Perawatan / Pemeliharaan/ Perbaikan Mesin & Bangunan', tarif: 2 },
+            { klaster: '23', code: '24-104-03', desc: 'Jasa kebersihan (Cleaning Service) & Keamanan (Security)', tarif: 2 },
+            { klaster: '23', code: '24-104-04', desc: 'Jasa IT, Software Development, Server & Maintenance Web', tarif: 2 },
+            { klaster: '23', code: '24-104-05', desc: 'Jasa Freight Forwarding, Logistik & Ekspedisi Pengiriman', tarif: 2 },
+            { klaster: '23', code: '24-102-01', desc: 'Sewa & Penggunaan Harta (Selain Tanah dan/atau Bangunan)', tarif: 2 },
+            { klaster: '23', code: '24-100-01', desc: 'Dividen Diterima Wajib Pajak Badan Dalam Negeri', tarif: 15 },
+            { klaster: '23', code: '24-101-01', desc: 'Bunga Pinjaman (Selain Bunga Bank)', tarif: 15 },
+            { klaster: '23', code: '24-103-01', desc: 'Royalti atas Penggunaan Hak Cipta, Paten, Merek Dagang', tarif: 15 },
+            { klaster: '23', code: '24-105-01', desc: 'Hadiah, Penghargaan & Bonus Selain PPh 21', tarif: 15 },
+
+            // --- PPh 4(2) ---
+            { klaster: '4(2)', code: '28-402-01', desc: 'Sewa Tanah dan/atau Bangunan (Gedung, Kantor, Ruko, Gudang)', tarif: 10 },
+            { klaster: '4(2)', code: '28-403-01', desc: 'Pengalihan Hak atas Tanah dan/atau Bangunan', tarif: 2.5 },
+            { klaster: '4(2)', code: '28-409-01', desc: 'Jasa Konstruksi - Pelaksanaan (Sertifikat Kualifikasi Kecil)', tarif: 1.75 },
+            { klaster: '4(2)', code: '28-409-02', desc: 'Jasa Konstruksi - Pelaksanaan (Sertifikat Kualifikasi Menengah/Besar)', tarif: 2.65 },
+            { klaster: '4(2)', code: '28-409-03', desc: 'Jasa Konstruksi - Konsultasi / Pengawasan Bersertifikat', tarif: 3.5 },
+            { klaster: '4(2)', code: '28-409-04', desc: 'Jasa Konstruksi - Pelaksanaan Tanpa Sertifikat Kualifikasi', tarif: 4 },
+            { klaster: '4(2)', code: '28-401-01', desc: 'Bunga Deposito, Tabungan & Diskonto SBI', tarif: 20 },
+            { klaster: '4(2)', code: '28-419-01', desc: 'Dividen Diterima Wajib Pajak Orang Pribadi Dalam Negeri', tarif: 10 },
+
+            // --- PPh 22 ---
+            { klaster: '22', code: '22-100-01', desc: 'Pengadaan / Pembelian Barang Oleh Instansi Pemerintah & BUMN', tarif: 1.5 },
+            { klaster: '22', code: '22-100-02', desc: 'Penjualan Bahan Bakar Minyak & Pelumas oleh Pertamina/Produsen', tarif: 0.25 },
+            { klaster: '22', code: '22-101-01', desc: 'Impor Barang Menggunakan API (Angka Pengenal Impor)', tarif: 2.5 },
+
+            // --- PPh 15 ---
+            { klaster: '15', code: '25-100-01', desc: 'Imbalan Jasa Pelayaran Dalam Negeri (Charter Kapal/Freight)', tarif: 1.2 },
+            { klaster: '15', code: '25-100-02', desc: 'Imbalan Jasa Penerbangan Dalam Negeri (Charter Pesawat)', tarif: 1.8 },
+
+            // --- PPh 26 ---
+            { klaster: '26', code: '27-100-01', desc: 'Imbalan Jasa Teknik, Manajemen, IT & Jasa Lainnya ke WPLN', tarif: 20 },
+            { klaster: '26', code: '27-100-03', desc: 'Royalti, Lisensi & Hak Penggunaan Cipta ke WPLN', tarif: 20 },
         ],
 
         fasilitasList: [
@@ -256,12 +281,28 @@ document.addEventListener('alpine:init', () => {
             return this.kopList.find((k) => k.code === this.kopSelected) ?? null;
         },
 
+        // KOP yang tersedia hanya milik klaster yang sedang dipilih
+        get kopListKlaster() {
+            return this.kopList.filter((k) => k.klaster === this.klasterSelected);
+        },
+
         get filteredKopList() {
-            if (!this.kopSearch.trim()) return this.kopList;
+            const base = this.kopListKlaster;
+            if (!this.kopSearch.trim()) return base;
             const q = this.kopSearch.toLowerCase();
-            return this.kopList.filter(
+            return base.filter(
                 (k) => k.code.toLowerCase().includes(q) || k.desc.toLowerCase().includes(q)
             );
+        },
+
+        // Ganti klaster: KOP otomatis pindah ke KOP pertama milik klaster baru
+        selectKlaster(code) {
+            if (this.klasterSelected === code) return;
+            this.klasterSelected = code;
+            this.kopSearch = '';
+            this.open.kop = false;
+            const first = this.kopList.find((k) => k.klaster === code);
+            this.kopSelected = first ? first.code : '';
         },
 
         selectKop(code) {

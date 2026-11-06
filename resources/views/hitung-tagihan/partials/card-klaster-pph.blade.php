@@ -16,7 +16,7 @@
     {{-- 5 Card Klaster PPh --}}
     <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-6">
         <template x-for="k in klasterList" :key="k.code">
-            <button type="button" @click="klasterSelected = k.code"
+            <button type="button" @click="selectKlaster(k.code)"
                 class="rounded-xl border-2 px-3 py-3 text-left transition"
                 :class="klasterSelected === k.code
                     ? 'border-blue-600'
@@ -88,7 +88,7 @@
     <div class="bg-slate-50 rounded-lg px-4 py-3 mb-5">
         <p class="text-sm font-semibold text-slate-700" x-text="selectedKop?.desc ?? ''"></p>
         <p class="text-xs text-slate-500 mt-0.5">
-            Dasar Hukum: PMK-141/PMK.03/2015 &amp; PER-24/PJ/2021 &bull; Tarif Dasar: <span class="font-semibold text-blue-600" x-text="(selectedKop?.tarif ?? 0) + '%'"></span>
+            Dasar Hukum: <span x-text="selectedKlaster.dasarHukum"></span> &bull; Tarif Dasar: <span class="font-semibold text-blue-600" x-text="(selectedKop?.tarif ?? 0) + '%'"></span>
         </p>
     </div>
 
