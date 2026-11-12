@@ -101,6 +101,8 @@ document.addEventListener('alpine:init', () => {
         kategoriWajibPajakSelected: 'Badan Usaha (PT / CV / Firma)',
         npwp: '',
         nonNpwp: false,
+        taxId: '',
+        negaraDomisili: 'Singapore (SG)',
 
         klasterSelected: '23',
         kopSelected: '24-104-01',
@@ -184,6 +186,7 @@ document.addEventListener('alpine:init', () => {
             this.klasterSelected = params.get('klasterSelected') ?? this.klasterSelected;
             this.kopSelected = params.get('kopSelected') ?? this.kopSelected;
             this.fasilitasSelected = params.get('fasilitasSelected') ?? this.fasilitasSelected;
+            if (this.klasterSelected === '26') this.taxId = this.npwp;
 
             const tglISO = params.get('tanggalISO');
             if (tglISO) {
@@ -298,7 +301,19 @@ document.addEventListener('alpine:init', () => {
         // Ganti klaster: KOP otomatis pindah ke KOP pertama milik klaster baru
         selectKlaster(code) {
             if (this.klasterSelected === code) return;
+            const sebelumnya = this.klasterSelected;
             this.klasterSelected = code;
+
+            const KAT_WPLN = 'Wajib Pajak Luar Negeri (WPLN)';
+            const KAT_BADAN = 'Badan Usaha (PT / CV / Firma)';
+            if (code === '26') {
+                // PPh 26 = vendor luar negeri: default kategori WPLN, tanpa opsi Non-NPWP
+                this.kategoriWajibPajakSelected = KAT_WPLN;
+                this.nonNpwp = false;
+            } else if (sebelumnya === '26' && this.kategoriWajibPajakSelected === KAT_WPLN) {
+                // keluar dari PPh 26: kembalikan default kategori seperti semula
+                this.kategoriWajibPajakSelected = KAT_BADAN;
+            }
             this.kopSearch = '';
             this.open.kop = false;
             const first = this.kopList.find((k) => k.klaster === code);
@@ -383,6 +398,8 @@ document.addEventListener('alpine:init', () => {
             this.kategoriWajibPajakSelected = 'Badan Usaha (PT / CV / Firma)';
             this.npwp = '';
             this.nonNpwp = false;
+            this.taxId = '';
+            this.negaraDomisili = 'Singapore (SG)';
             this.klasterSelected = '23';
             this.kopSelected = '24-104-01';
             this.kopSearch = '';

@@ -17,7 +17,7 @@
 
         {{-- Nama Klien / Vendor --}}
         <div class="sm:col-span-2">
-            <label class="block text-xs font-semibold tracking-wide text-slate-500 mb-2">NAMA KLIEN / VENDOR</label>
+            <label class="block text-xs font-semibold tracking-wide text-slate-500 mb-2">NAMA KLIEN / VENDOR <span x-show="klasterSelected === '26'" x-cloak class="text-red-500">*</span></label>
             <input type="text" x-model="namaKlien" placeholder="Contoh: PT Solusi Teknologi Prima"
                 class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition" />
         </div>
@@ -44,8 +44,8 @@
             </div>
         </div>
 
-        {{-- NPWP / NIK + Checkbox Non-NPWP --}}
-        <div>
+        {{-- NPWP / NIK + Checkbox Non-NPWP (selain PPh 26) --}}
+        <div x-show="klasterSelected !== '26'">
             <div class="flex items-center justify-between mb-2">
                 <label class="block text-xs font-semibold tracking-wide text-slate-500">NPWP / NIK (16 DIGIT)</label>
                 <label class="flex items-center gap-1.5 cursor-pointer select-none">
@@ -72,6 +72,22 @@
                 style="background-color:#FEF2F2; border:1px solid #B91C1C;">
                 NON-NPWP (Tarif 2x)
             </div>
+        </div>
+
+
+        {{-- ================= Khusus PPh 26 (vendor luar negeri) ================= --}}
+        {{-- Tax ID / TIN Luar Negeri --}}
+        <div x-show="klasterSelected === '26'" x-cloak>
+            <label class="block text-xs font-semibold tracking-wide text-slate-500 mb-2">TAX ID / TIN LUAR NEGERI</label>
+            <input type="text" x-model="taxId" placeholder="01.234.567.8-000.000"
+                class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-800 font-mono placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition" />
+        </div>
+
+        {{-- Negara Domisili Klien Luar Negeri --}}
+        <div class="sm:col-span-2" x-show="klasterSelected === '26'" x-cloak>
+            <label class="block text-xs font-semibold tracking-wide text-slate-500 mb-2">NEGARA DOMISILI KLIEN LUAR NEGERI</label>
+            <input type="text" x-model="negaraDomisili" placeholder="Contoh: Singapore (SG)"
+                class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition" />
         </div>
 
     </div>
