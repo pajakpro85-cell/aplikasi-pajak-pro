@@ -3,6 +3,32 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('hitungTagihanForm', () => ({
 
         // ===================================================================
+        // 1. STATE DATA FORM (Sesuaikan dengan nama di card-data-tagihan.blade.php)
+        // ===================================================================
+        nomorInvoice: '',
+        selectedDate: null,
+        tanggalInvoiceDisplay: '',
+        masaBulanSelected: 'Oktober (Masa 10)',
+        tahunPajakSelected: 2026,
+        nilaiDPP: 10000000,
+        perlakuanPPN: 'PPN 11%',
+        statusPembayaranSelected: 'Siap Bayar (Approved)',
+
+        // State Dropdown Popup Menu
+        open: {
+            calendar: false,
+            masaBulan: false,
+            tahunPajak: false,
+            perlakuanPPN: false,
+            statusPembayaran: false
+        },
+
+        // Helper Dropdown Toggle
+        toggle(menu) {
+            this.open[menu] = !this.open[menu];
+        },
+
+        // ===================================================================
         // DUMMY / STATIC DATA (nanti disambungkan ke backend)
         // ===================================================================
         masaBulanList: [
@@ -83,6 +109,17 @@ document.addEventListener('alpine:init', () => {
             'PPN 12%',
         ],
 
+        // Helper Format Angka
+        formatNumber(val) {
+            if (!val) return '0';
+            return new Intl.NumberFormat('id-ID').format(val);
+        },
+
+        onNilaiDPPInput(e) {
+            let raw = e.target.value.replace(/\D/g, '');
+            this.nilaiDPP = raw ? parseInt(raw, 10) : 0;
+        },
+
         // ===================================================================
         // FORM STATE
         // ===================================================================
@@ -108,6 +145,55 @@ document.addEventListener('alpine:init', () => {
         kopSelected: '24-104-01',
         kopSearch: '',
         fasilitasSelected: 'Tanpa Fasilitas (Tarif Normal)',
+
+        // ===================================================================
+        // FUNGSI UNTUK MENGIRIM DATA KE BACKEND LARAVEL
+        // ===================================================================
+        async simpanInvoice() {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+            const selectedKop = this.kopList.find(k => k.code === this.kopSelected) || {};
+            const tarif = selectedKop.tarif || 2;
+            const potonganPPh = (this.nilaiDPP * tarif) / 100;
+
+            try {
+                const response = await fetch('/simpan-tagihan', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        nomor_invoice: this.nomorInvoice,
+                        tanggal_invoice: this.selectedDate,
+                        masa_pajak: this.masaBulanSelected,
+                        tahun_pajak: this.tahunPajakSelected,
+                        nilai_dpp: this.nilaiDPP,
+                        perlakuan_ppn: this.perlakuanPPN,
+                        status_pembayaran: this.statusPembayaranSelected,
+                        nama_klien: this.namaKlien || '',
+                        npwp_klien: this.npwp || '',
+                        kategori_wp: this.kategoriWajibPajakSelected || 'Badan Usaha',
+                        vendor_id: null,
+                        klaster_pph: this.klasterSelected || '23',
+                        kode_objek: this.kopSelected || '24-104-01',
+                        tarif: tarif,
+                        nilai_pph: potonganPPh
+                    })
+                });
+
+                const result = await response.json();
+                if (response.ok && result.success) {
+                    alert('Perhitungan invoice berhasil disimpan!');
+                    window.location.href = result.redirect || '/daftar-tagihan';
+                } else {
+                    alert('Gagal menyimpan data: ' + (result.message || 'Periksa kembali inputan form.'));
+                }
+            } catch (error) {
+                console.error('Terjadi kesalahan:', error);
+            }
+        },
 
         // ===================================================================
         // OPEN/CLOSE STATE UNTUK SEMUA DROPDOWN (reusable, satu object)

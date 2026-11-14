@@ -96,19 +96,31 @@
     </div>
 
     {{-- User footer --}}
-    <div class="border-t border-white/10 p-4">
-        <div class="flex items-center gap-3 mb-3">
-            <div class="w-9 h-9 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold shrink-0">AD</div>
-            <div class="min-w-0">
-                <p class="text-sm text-white font-medium truncate">admin@gmail.com</p>
-                <p class="text-xs text-slate-400 truncate">Tax Compliance &amp; Finance Staff</p>
-            </div>
+<div class="border-t border-white/10 p-4">
+    <div class="flex items-center gap-3 mb-3">
+        {{-- Avatar Inisial Dinamis --}}
+        <div class="w-9 h-9 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold shrink-0">
+            {{ strtoupper(substr(auth()->user()->name ?? auth()->user()->username ?? 'US', 0, 2)) }}
         </div>
-        <button type="button" @click="logoutConfirm = true" class="w-full flex items-center justify-center gap-2 rounded-lg bg-white/5 hover:bg-white/10 text-slate-200 text-sm font-medium py-2 transition">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
-            Keluar (Sign Out)
-        </button>
+        
+        <div class="min-w-0">
+            {{-- Nama / Username --}}
+            <p class="text-sm text-white font-medium truncate">
+                {{ auth()->user()->name ?? auth()->user()->username }}
+            </p>
+            
+            {{-- Email atau Role --}}
+            <p class="text-xs text-slate-400 truncate">
+                {{ auth()->user()->email ?? 'Tax Compliance & Finance Staff' }}
+            </p>
+        </div>
     </div>
+    
+    <button type="button" @click="logoutConfirm = true" class="w-full flex items-center justify-center gap-2 rounded-lg bg-white/5 hover:bg-white/10 text-slate-200 text-sm font-medium py-2 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        Keluar (Sign Out)
+    </button>
+</div>
 
     {{-- ================= MODAL: KONFIRMASI LOGOUT ================= --}}
     <div x-show="logoutConfirm" x-cloak

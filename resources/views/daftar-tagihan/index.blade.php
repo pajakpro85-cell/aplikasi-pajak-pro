@@ -28,8 +28,8 @@
             </header>
 
             {{-- ---- MAIN CONTENT (scroll vertikal saja) ---- --}}
-            <main class="flex-1 overflow-y-auto overflow-x-hidden px-8 py-6"
-                  x-data="daftarTagihanPage()" @keydown.escape.window="cancelDelete()">
+           <main class="flex-1 overflow-y-auto px-8 py-6" 
+      x-data="daftarTagihanPage({{ json_encode($invoices) }})">
 
                 {{-- Page heading --}}
                 <div class="flex items-start justify-between gap-4 flex-wrap mb-6">
@@ -184,10 +184,15 @@
                             <tbody class="divide-y divide-slate-100">
                                 <template x-for="row in filteredList" :key="row.id">
                                     <tr class="hover:bg-slate-50/60 transition">
-                                        <td class="px-6 py-4">
-                                            <a href="#" class="text-blue-600 font-mono text-[13px] font-medium" x-text="row.noInvoice"></a>
-                                            <p class="text-xs text-slate-400 mt-0.5" x-text="row.tanggalDisplay + ' • ' + row.masaDisplay"></p>
-                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+    <div class="flex flex-col gap-0.5">
+        {{-- Baris 1: Nomor Invoice --}}
+        <a href="#" class="text-blue-600 font-mono text-[13px] font-medium" x-text="row.noInvoice"></a>
+        
+        {{-- Baris 2: Tanggal & Masa Pajak --}}
+        <p class="text-xs text-slate-400 font-mono" x-text="row.tanggalDisplay + ' • ' + row.masaDisplay"></p>
+    </div>
+</td>
                                         <td class="px-6 py-4">
                                             <div class="flex items-center gap-2.5">
                                                 <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"

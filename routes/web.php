@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\InvoiceController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,7 +25,10 @@ Route::get('/hitung-tagihan', function () {
     return view('hitung-tagihan.index');
 })->name('hitung-tagihan');
 
-Route::get('/daftar-tagihan', fn () => view('daftar-tagihan.index'));
+Route::post('/simpan-tagihan', [InvoiceController::class, 'store'])
+    ->name('tagihan.store');
+
+Route::get('/daftar-tagihan', [InvoiceController::class, 'index'])->name('daftar-tagihan');
 Route::get('/cetak-slip/{id}', fn ($id) => view('cetak-slip.index', compact('id')));
 
 Route::get('/rekapitulasi', fn () => view('rekapitulasi.objek-pajak'));

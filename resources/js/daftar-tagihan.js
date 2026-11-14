@@ -2,21 +2,66 @@ import { tagihanDummyList, buyerInfo, penandatanganInfo } from './data/tagihan-d
 
 document.addEventListener('alpine:init', () => {
 
-    Alpine.data('daftarTagihanPage', () => ({
+    // Ubah bagian penerimaan parameter dbInvoices menjadi seperti ini:
+Alpine.data('daftarTagihanPage', (dbInvoices = [], buyerInfo = null, penandatanganInfo = null) => {
 
-        // ===================================================================
-        // DUMMY DATA (nanti disambungkan ke backend)
-        // Field *Form* / *Raw* di tiap row dipakai khusus untuk prefill
-        // form Hitung Tagihan saat tombol Edit diklik.
-        // ===================================================================
-        tagihanList: tagihanDummyList.map((r) => ({ ...r })),
+    // Ambil data array-nya (mengantisipasi jika dikirim dari Laravel paginate)
+    const listData = Array.isArray(dbInvoices) ? dbInvoices : (dbInvoices.data || []);
 
-        // Data perusahaan pemotong (Buyer) & penandatangan — sama untuk semua invoice,
-        // nanti ganti dengan data perusahaan dari backend/profil akun.
+    const namaBulan = {
+        1: 'Januari', 2: 'Februari', 3: 'Maret', 4: 'April', 5: 'Mei', 6: 'Juni',
+        7: 'Juli', 8: 'Agustus', 9: 'September', 10: 'Oktober', 11: 'November', 12: 'Desember'
+    };
+
+    return {
+        tagihanList: listData.map((inv) => {
+            const bulanNama = namaBulan[parseInt(inv.masa_pajak)] || inv.masa_pajak;
+            const masaFormat = `Masa ${bulanNama} ${inv.tahun_pajak || ''}`;
+
+            let rawDate = inv.tanggal_invoice ? String(inv.tanggal_invoice).split('T')[0].split(' ')[0] : '-';
+            let formattedDate = rawDate !== '-' ? `Tgl: ${rawDate}` : '-';
+
+            const dpp = Math.round(Number(inv.nilai_dpp) || 0);
+
+            let nilaiPPN = 0;
+            let ppnText = '';
+            if (inv.perlakuan_ppn === 'ppn_11') {
+                nilaiPPN = Math.round(dpp * 0.11);
+                ppnText = '+ PPN 11%: Rp ' + new Intl.NumberFormat('id-ID', { maximumFractionDigits: 0 }).format(nilaiPPN);
+            } else if (inv.perlakuan_ppn === 'ppn_12') {
+                nilaiPPN = Math.round(dpp * 0.12);
+                ppnText = '+ PPN 12%: Rp ' + new Intl.NumberFormat('id-ID', { maximumFractionDigits: 0 }).format(nilaiPPN);
+            }
+
+            const tarif = inv.tarif_pph || 2;
+            const nilaiPPh = Math.round(inv.nilai_pph || (dpp * tarif / 100));
+            const totalTransfer = Math.round((dpp + nilaiPPN) - nilaiPPh);
+
+            return {
+                id: inv.id_invoice,
+                noInvoice: inv.nomor_invoice || '-',
+                tanggalDisplay: formattedDate,
+                masaDisplay: masaFormat,
+                klien: inv.vendor ? inv.vendor.nama_vendor : 'PT Klien',
+                npwp: inv.vendor ? inv.vendor.npwp : '00.000.000.0-000.000',
+                kategoriKlien: inv.vendor ? inv.vendor.kategori_wp : 'Badan Usaha',
+                jenisPphDisplay: inv.klaster_pph ? `PPh Pasal ${inv.klaster_pph}` : 'PPh Pasal 23',
+                kopCode: inv.kode_objek_pajak || '24-104-01',
+                kopDesc: inv.keterangan_pekerjaan || 'Jasa Manajemen, Konsultasi...',
+                dppDisplay: 'IDR ' + new Intl.NumberFormat('id-ID', { maximumFractionDigits: 0 }).format(dpp),
+                ppnDisplay: ppnText,
+                tarifDisplay: `${tarif}%`,
+                potonganDisplay: 'IDR ' + new Intl.NumberFormat('id-ID', { maximumFractionDigits: 0 }).format(nilaiPPh),
+                bersihDisplay: 'IDR ' + new Intl.NumberFormat('id-ID', { maximumFractionDigits: 0 }).format(totalTransfer),
+                status: inv.status_pembayaran || 'Siap Bayar',
+            };
+        }),
+
         buyer: buyerInfo,
         penandatangan: penandatanganInfo,
 
         nextId: 6,
+
 
         // ===================================================================
         // FILTER OPTIONS
@@ -174,7 +219,6 @@ document.addEventListener('alpine:init', () => {
             this.tagihanList = this.tagihanList.filter((r) => r.id !== this.confirmDeleteId);
             this.confirmDeleteId = null;
         },
-
-    }));
-
+    };
+});
 });
