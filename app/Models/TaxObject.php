@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class TaxObject extends Model
 {
 
+    protected $table = 'tax_objects';
     protected $primaryKey = 'id_object';
 
     public $timestamps = false;

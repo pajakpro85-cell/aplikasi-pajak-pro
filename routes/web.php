@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\TaxObjectController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -40,4 +41,6 @@ Route::get('/ekspor-laporan', fn () => view('ekspor-laporan.index'));
 Route::get('/asisten-pajak-ai', fn () => view('asisten-pajak-ai.index'));
 Route::get('/pengaturan/pemotong-pajak', fn () => view('pengaturan.pemotong-pajak'));
 Route::get('/pengaturan/vendor', fn () => view('pengaturan.vendor'));
-Route::get('/pengaturan/master-kop', fn () => view('pengaturan.master-kop'));
+Route::get('/pengaturan/master-kop', [TaxObjectController::class, 'index'])->name('master-kop.index');
+Route::put('/pengaturan/master-kop/{taxObject}/tarif', [TaxObjectController::class, 'updateTarif'])->name('master-kop.update-tarif');
+Route::post('/pengaturan/master-kop/reset', [TaxObjectController::class, 'resetDefault'])->name('master-kop.reset');

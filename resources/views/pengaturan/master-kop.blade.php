@@ -26,7 +26,8 @@
             </header>
 
             {{-- ---- MAIN CONTENT (scroll vertikal untuk halaman; tabel di dalam punya scroll sendiri) ---- --}}
-            <main class="flex-1 overflow-y-auto overflow-x-hidden px-8 py-6" x-data="pengaturanMasterKopPage()">
+            <main class="flex-1 overflow-y-auto overflow-x-hidden px-8 py-6"
+                x-data="pengaturanMasterKopPage({{ Js::from($taxObjects ?? []) }}, {{ Js::from($clusters ?? []) }})">
 
                 {{-- Page heading --}}
                 <div class="mb-6">
@@ -106,7 +107,7 @@
                                         </td>
                                         <td class="px-6 py-4 align-top">
                                             <div class="flex items-center justify-end gap-2">
-                                                <input type="number" step="0.1" x-model.number="row.tarif"
+                                                <input type="number" step="0.1" x-model.number="row.tarif" @change="updateTarif(row)"
                                                     class="w-20 rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-800 text-right focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition" />
                                                 <span class="text-sm text-slate-500">%</span>
                                             </div>

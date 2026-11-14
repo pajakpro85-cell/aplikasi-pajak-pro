@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\TaxCluster;
 use App\Models\TaxObject;
 use Illuminate\Http\Request;
+use Psy\Command\WhereamiCommand;    
 
 class TaxObjectController extends Controller
 {
@@ -14,10 +15,14 @@ class TaxObjectController extends Controller
     public function index()
     {
         $taxObjects = TaxObject::with('taxCluster')
-            ->orderBy('kode_objek')
+            ->where('status', 'aktif')
+            ->orderBy('id_object')
             ->get();
 
-        return view('tax_objects.index', compact('taxObjects'));
+        // Ambil daftar nama klaster unik dari database untuk opsi dropdown filter
+        $clusters = TaxCluster::pluck('nama_cluster')->unique()->values();
+
+        return view('pengaturan.master-kop', compact('taxObjects', 'clusters'));
     }
 
     /**
@@ -115,5 +120,50 @@ class TaxObjectController extends Controller
         return redirect()
             ->route('tax-objects.index')
             ->with('success', 'Objek pajak berhasil dihapus.');
+    }
+
+    public function updateTarif(Request $request, TaxObject $taxObject)
+    {
+        $validated = $request->validate([
+            'tarif' => 'required|numeric|min:0|max:100',
+        ]);
+
+        $taxObject->update([
+            'tarif' => $validated['tarif'],
+        ]);
+
+        return response()->json([
+            'message' => 'Tarif berhasil diperbarui.',
+            'data'    => $taxObject,
+        ]);
+    }
+
+    public function resetDefault()
+    {
+        // Karena tabel tax_objects tidak punya kolom tarif_default terpisah,
+        // nilai default diambil dari tarif standar klaster / aturan PER-24/PJ/2021
+        $objects = TaxObject::with('taxCluster')->get();
+
+        foreach ($objects as $obj) {
+            // Sesuaikan tarif standar per kode/klaster jika berbeda (misal PPh 26 = 20%, Sewa Tanah = 10%, dst.)
+            $defaultTarif = match (true) {
+                str_starts_with($obj->kode_objek, '27-') => 20,    // PPh 26
+                str_starts_with($obj->kode_objek, '28-402') => 10, // Sewa Tanah/Bangunan PPh 4(2)
+                str_starts_with($obj->kode_objek, '28-403') => 2.5,// Pengalihan Tanah/Bangunan
+                str_starts_with($obj->kode_objek, '28-401') => 20, // Bunga Deposito
+                str_starts_with($obj->kode_objek, '28-419') => 10, // Dividen WP OP
+                str_starts_with($obj->kode_objek, '22-') => 1.5,   // PPh 22
+                default => 2,                                      // Standar PPh 23 & Jasa Konstruksi
+            };
+
+            $obj->update(['tarif' => $defaultTarif]);
+        }
+
+        $updated = TaxObject::with('taxCluster')->where('status', 'aktif')->orderBy('id_object')->get();
+
+        return response()->json([
+            'message' => 'Semua tarif berhasil di-reset ke standar.',
+            'data'    => $updated,
+        ]);
     }
 }
