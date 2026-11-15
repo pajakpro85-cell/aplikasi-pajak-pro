@@ -1,6 +1,7 @@
 document.addEventListener('alpine:init', () => {
 
-    Alpine.data('pengaturanVendorPage', () => ({
+    // initialVendors = data dari database yang dikirim controller lewat Blade (@js)
+    Alpine.data('pengaturanVendorPage', (initialVendors = []) => ({
 
         // ===================================================================
         // FORM (tambah / edit)
@@ -61,8 +62,8 @@ document.addEventListener('alpine:init', () => {
         // Field yang dipakai tabel untuk tiap baris:
         //   id, nama, kategoriWp, npwp (NPWP atau Tax ID luar negeri), negara
         // ===================================================================
-        nextId: 1,
-        vendors: [],
+        nextId: initialVendors.reduce((max, v) => Math.max(max, Number(v.id) || 0), 0) + 1,
+        vendors: initialVendors,
 
         // ===================================================================
         // AKSI: DELETE (modal konfirmasi)
