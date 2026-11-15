@@ -100,8 +100,9 @@
                             <thead style="background-color:#F8FAFC;">
                                 <tr class="text-left text-xs font-bold tracking-wide text-slate-500 border-b border-slate-100">
                                     <th class="px-6 py-3 whitespace-nowrap">NAMA VENDOR</th>
-                                    <th class="px-6 py-3 whitespace-nowrap">EMAIL</th>
-                                    <th class="px-6 py-3 whitespace-nowrap">ALAMAT LENGKAP VENDOR</th>
+                                    <th class="px-6 py-3 whitespace-nowrap">KATEGORI WP</th>
+                                    <th class="px-6 py-3 whitespace-nowrap">NPWP / TAX ID</th>
+                                    <th class="px-6 py-3 whitespace-nowrap">NEGARA DOMISILI</th>
                                     <th class="px-6 py-3 whitespace-nowrap text-center">AKSI</th>
                                 </tr>
                             </thead>
@@ -111,8 +112,15 @@
                                         <td class="px-6 py-4">
                                             <p class="font-semibold text-blue-600 whitespace-nowrap" x-text="row.nama"></p>
                                         </td>
-                                        <td class="px-6 py-4 text-slate-500 whitespace-nowrap" x-text="row.email || '\u2013'"></td>
-                                        <td class="px-6 py-4 text-slate-600 max-w-md" x-text="row.alamat"></td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="inline-flex items-center rounded-md text-xs font-medium px-2.5 py-1 border"
+                                                :class="(row.kategoriWp || '').includes('WPLN') ? 'border-purple-200 text-purple-600' : 'border-blue-300 text-blue-700'"
+                                                :style="(row.kategoriWp || '').includes('WPLN') ? 'background-color:#F3E8FF' : 'background-color:#A5C1FF'"
+                                                x-show="row.kategoriWp" x-text="row.kategoriWp"></span>
+                                            <span x-show="!row.kategoriWp" class="text-slate-400">&ndash;</span>
+                                        </td>
+                                        <td class="px-6 py-4 font-mono text-slate-600 whitespace-nowrap" x-text="row.npwp || '\u2013'"></td>
+                                        <td class="px-6 py-4 text-slate-600 whitespace-nowrap" x-text="row.negara || '\u2013'"></td>
                                         <td class="px-6 py-4">
                                             <div class="flex items-center justify-center gap-3 text-slate-400">
                                                 <button type="button" title="Edit" @click="editVendor(row)" class="hover:text-blue-600 transition">
@@ -130,8 +138,9 @@
                                 </template>
 
                                 <tr x-show="filteredVendors.length === 0">
-                                    <td colspan="4" class="px-6 py-16 text-center text-sm text-slate-400">
-                                        Tidak ada vendor yang cocok dengan pencarian kamu.
+                                    <td colspan="5" class="px-6 py-16 text-center text-sm text-slate-400">
+                                        <span x-show="search.trim() !== ''">Tidak ada vendor yang cocok dengan pencarian kamu.</span>
+                                        <span x-show="search.trim() === ''">Belum ada data vendor.</span>
                                     </td>
                                 </tr>
                             </tbody>

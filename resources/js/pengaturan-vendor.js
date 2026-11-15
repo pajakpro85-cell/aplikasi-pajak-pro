@@ -37,10 +37,9 @@ document.addEventListener('alpine:init', () => {
 
         copyVendor(row) {
             this.vendors.unshift({
+                ...row,
                 id: this.nextId++,
                 nama: row.nama + ' (Copy)',
-                email: row.email,
-                alamat: row.alamat,
             });
         },
 
@@ -53,40 +52,17 @@ document.addEventListener('alpine:init', () => {
             const q = this.search.trim().toLowerCase();
             if (!q) return this.vendors;
             return this.vendors.filter((v) =>
-                `${v.nama} ${v.email} ${v.alamat}`.toLowerCase().includes(q)
+                `${v.nama} ${v.kategoriWp ?? ''} ${v.npwp ?? ''} ${v.negara ?? ''} ${v.email ?? ''} ${v.alamat ?? ''}`.toLowerCase().includes(q)
             );
         },
 
         // ===================================================================
-        // DUMMY DATA (nanti disambungkan ke backend)
+        // DATA VENDOR — sengaja dikosongkan, nanti diisi langsung dari database.
+        // Field yang dipakai tabel untuk tiap baris:
+        //   id, nama, kategoriWp, npwp (NPWP atau Tax ID luar negeri), negara
         // ===================================================================
-        nextId: 5,
-        vendors: [
-            {
-                id: 1,
-                nama: 'PT Graha Pratama Solusindo',
-                email: 'grahapratama@gmail.com',
-                alamat: 'Gedung Menara Sudirman Lt. 14, Jl. Jend. Sudirman Kav. 60, Jakarta Selatan',
-            },
-            {
-                id: 2,
-                nama: 'PT Cipta Sarana Bangun Indonesia',
-                email: '',
-                alamat: 'Jl. TB Simatupang No. 88, Cilandak, Jakarta Selatan',
-            },
-            {
-                id: 3,
-                nama: 'PT Samudera Bahtera Nusantara',
-                email: '',
-                alamat: 'Jl. Pelabuhan Tanjung Priok No. 12, Jakarta Utara',
-            },
-            {
-                id: 4,
-                nama: 'CloudScale Technologies Pte. Ltd.',
-                email: '',
-                alamat: '1 Marina Boulevard #28-00, Marina Bay, Singapore 018989',
-            },
-        ],
+        nextId: 1,
+        vendors: [],
 
         // ===================================================================
         // AKSI: DELETE (modal konfirmasi)

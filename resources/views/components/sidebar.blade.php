@@ -106,12 +106,12 @@
         <div class="min-w-0">
             {{-- Nama / Username --}}
             <p class="text-sm text-white font-medium truncate">
-                {{ auth()->user()->name ?? auth()->user()->username }}
+                {{ auth()->user()?->name ?? auth()->user()?->username ?? 'Admin' }}
             </p>
             
             {{-- Email atau Role --}}
             <p class="text-xs text-slate-400 truncate">
-                {{ auth()->user()->email ?? 'Tax Compliance & Finance Staff' }}
+                {{ auth()->user()?->email ?? 'Tax Compliance & Finance Staff' }}
             </p>
         </div>
     </div>
