@@ -26,7 +26,7 @@
             </header>
 
             {{-- ---- MAIN CONTENT (scroll vertikal saja) ---- --}}
-            <main class="flex-1 overflow-y-auto overflow-x-hidden px-8 py-6" x-data="pengaturanPemotongPajakPage()">
+            <main class="flex-1 overflow-y-auto overflow-x-hidden px-8 py-6" x-data="pengaturanPemotongPajakPage(@js($profiles ?? []))">
 
                 {{-- Page heading --}}
                 <div class="mb-6">
@@ -73,7 +73,7 @@
 
                         <div>
                             <label class="block text-xs font-semibold tracking-wide text-slate-500 mb-2">NPWP / NITKU PEMOTONG (16 / 15 DIGIT)</label>
-                            <input type="text" x-model="form.npwpNitku" placeholder="01.234.567.8-012.000"
+                            <input type="text" x-model="form.npwp" placeholder="01.234.567.8-012.000"
                                 class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-blue-600 font-mono placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition" />
                         </div>
 
@@ -106,7 +106,7 @@
                             </button>
                             <div x-show="open.metode" x-cloak x-transition
                                 class="absolute left-0 right-0 z-20 mt-2 max-h-64 overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-lg py-1.5">
-                                <template x-for="m in masaBulanList" :key="m">
+                                <template x-for="m in metodeList" :key="m">
                                     <button type="button" @click="form.metodeDefault = m; open.metode = false"
                                         class="w-full flex items-center justify-between gap-2 px-3.5 py-2 text-sm hover:bg-blue-50 transition text-left"
                                         :class="form.metodeDefault === m ? 'text-blue-600 font-semibold' : 'text-slate-700'">
@@ -151,7 +151,7 @@
                                                 <p class="font-semibold text-slate-800 whitespace-nowrap" x-text="row.namaPerusahaan"></p>
                                             </div>
                                         </td>
-                                        <td class="px-6 py-4 font-mono text-blue-600 whitespace-nowrap" x-text="row.npwpNitku"></td>
+                                        <td class="px-6 py-4 font-mono text-blue-600 whitespace-nowrap" x-text="row.npwp"></td>
                                         <td class="px-6 py-4 text-slate-500 max-w-xs truncate" x-text="row.alamat"></td>
                                         <td class="px-6 py-4 text-slate-700 whitespace-nowrap" x-text="row.namaPejabat"></td>
                                         <td class="px-6 py-4 text-slate-500 whitespace-nowrap" x-text="row.jabatan"></td>
@@ -223,7 +223,7 @@
                                 <div class="px-6 py-5 space-y-4 text-sm">
                                     <div>
                                         <p class="text-xs font-semibold tracking-wide text-slate-400 mb-1">NPWP / NITKU PEMOTONG</p>
-                                        <p class="font-mono text-blue-600" x-text="viewRow.npwpNitku"></p>
+                                        <p class="font-mono text-blue-600" x-text="viewRow.npwp"></p>
                                     </div>
                                     <div>
                                         <p class="text-xs font-semibold tracking-wide text-slate-400 mb-1">ALAMAT LENGKAP</p>

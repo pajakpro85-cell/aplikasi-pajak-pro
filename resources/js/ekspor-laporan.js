@@ -1,8 +1,6 @@
-import { tagihanDummyList } from './data/tagihan-dummy';
-
 document.addEventListener('alpine:init', () => {
 
-    Alpine.data('eksporLaporanPage', () => {
+    Alpine.data('eksporLaporanPage', (dbInvoices = []) => {
 
         const masaBulanList = [
             'Januari (Masa 1)', 'Februari (Masa 2)', 'Maret (Masa 3)', 'April (Masa 4)',
@@ -10,16 +8,15 @@ document.addEventListener('alpine:init', () => {
             'September (Masa 9)', 'Oktober (Masa 10)', 'November (Masa 11)', 'Desember (Masa 12)',
         ];
 
-        // Otomatis pilih bulan berjalan sesuai tanggal perangkat user saat halaman dibuka
         const today = new Date();
 
         return {
+            invoices: Array.isArray(dbInvoices) ? dbInvoices : [],
             masaBulanList,
             masaSelected: masaBulanList[today.getMonth()],
             tahunPembukuan: today.getFullYear(),
 
-            // Default saat pertama buka halaman: format Excel (hijau) yang aktif
-            formatSelected: 'excel', // 'excel' | 'pdf'
+            formatSelected: 'excel',
 
             open: {
                 masa: false,
@@ -47,16 +44,13 @@ document.addEventListener('alpine:init', () => {
                 this.tahunPembukuan--;
             },
 
-            // Ambil baris tagihan yang cocok sama masa & tahun yang lagi dipilih
+            // Ambil baris tagihan asli dari database yang cocok dengan masa & tahun pilihan
             get filteredRows() {
-                return tagihanDummyList.filter(
-                    (row) => row.masaBulan === this.masaSelected && row.tahun === this.tahunPembukuan
+                return this.invoices.filter(
+                    (row) => row.masaBulan === this.masaSelected && Number(row.tahun) === Number(this.tahunPembukuan)
                 );
             },
 
-            // ===================================================================
-            // AKSI: UNDUH LAPORAN — beneran generate file, bukan tombol dummy
-            // ===================================================================
             unduhLaporan() {
                 if (this.formatSelected === 'excel') {
                     this.downloadCsv();
@@ -65,9 +59,13 @@ document.addEventListener('alpine:init', () => {
                 }
             },
 
-            // Format Excel/CSV: generate file asli via Blob, murni di browser (nggak butuh backend)
             downloadCsv() {
                 const rows = this.filteredRows;
+
+                if (rows.length === 0) {
+                    alert(`Tidak ada data tagihan pada Masa ${this.masaLabelPendek} ${this.tahunPembukuan}.`);
+                    return;
+                }
 
                 const header = [
                     'No Invoice', 'Tanggal', 'Klien/Vendor', 'NPWP', 'Jenis PPh', 'Kode Objek',
@@ -95,7 +93,6 @@ document.addEventListener('alpine:init', () => {
                     ].join(';'));
                 });
 
-                // \ufeff (BOM) supaya Excel baca karakter non-ASCII (Rp, dsb) dengan benar
                 const csvContent = '\ufeff' + lines.join('\r\n');
                 const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
                 const url = URL.createObjectURL(blob);
@@ -111,7 +108,6 @@ document.addEventListener('alpine:init', () => {
                 URL.revokeObjectURL(url);
             },
 
-            // Format PDF: buka halaman cetak baru (voucher/approval), auto-trigger print dialog browser
             bukaCetakPdf() {
                 const params = new URLSearchParams({
                     masa: this.masaSelected,

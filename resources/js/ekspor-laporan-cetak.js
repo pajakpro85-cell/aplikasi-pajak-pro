@@ -1,8 +1,6 @@
-import { tagihanDummyList, buyerInfo } from './data/tagihan-dummy';
-
 document.addEventListener('alpine:init', () => {
 
-    Alpine.data('cetakLaporanPdfPage', () => {
+    Alpine.data('cetakLaporanPdfPage', (dbInvoices = [], dbBuyer = { name: '-' }) => {
 
         const params = new URLSearchParams(window.location.search);
         const masa = params.get('masa') ?? '';
@@ -11,26 +9,23 @@ document.addEventListener('alpine:init', () => {
         return {
             masa,
             tahun,
-            buyer: buyerInfo,
+            buyer: dbBuyer,
+            rows: Array.isArray(dbInvoices) ? dbInvoices : [],
 
             get masaLabelPendek() {
                 return this.masa ? this.masa.split(' (')[0] : '-';
             },
 
-            get rows() {
-                return tagihanDummyList.filter((r) => r.masaBulan === this.masa && r.tahun === this.tahun);
-            },
-
             get totalDPP() {
-                return this.rows.reduce((sum, r) => sum + r.dppRaw, 0);
+                return this.rows.reduce((sum, r) => sum + Number(r.dppRaw || 0), 0);
             },
 
             get totalPotongan() {
-                return this.rows.reduce((sum, r) => sum + r.potonganRaw, 0);
+                return this.rows.reduce((sum, r) => sum + Number(r.potonganRaw || 0), 0);
             },
 
             get totalBersih() {
-                return this.rows.reduce((sum, r) => sum + r.bersihRaw, 0);
+                return this.rows.reduce((sum, r) => sum + Number(r.bersihRaw || 0), 0);
             },
 
             formatIDR(value) {
@@ -42,7 +37,6 @@ document.addEventListener('alpine:init', () => {
             },
 
             init() {
-                // Auto-buka dialog print begitu halaman siap, biar user tinggal pilih "Save as PDF"
                 this.$nextTick(() => {
                     setTimeout(() => window.print(), 400);
                 });

@@ -26,7 +26,8 @@
             </header>
 
             {{-- ---- MAIN CONTENT (scroll vertikal saja) ---- --}}
-            <main class="flex-1 overflow-y-auto overflow-x-hidden px-8 py-6" x-data="pengaturanVendorPage(@js($vendors ?? []))">
+            <main class="flex-1 overflow-y-auto overflow-x-hidden px-8 py-6"
+                x-data="pengaturanVendorPage({{ Js::from($vendors ?? []) }})">
 
                 {{-- Page heading --}}
                 <div class="mb-6">
@@ -71,14 +72,26 @@
                         </div>
 
                         <div>
-                            <label class="block text-xs font-semibold tracking-wide text-slate-500 mb-2">EMAIL</label>
-                            <input type="email" x-model="form.email" placeholder="nama@email.com"
-                                class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition" />
+                            <label class="block text-xs font-semibold tracking-wide text-slate-500 mb-2">KATEGORI WAJIB PAJAK (WP)</label>
+                            <select x-model="form.kategoriWp" @change="onKategoriChange()"
+                                class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition">
+                                <option value="WP Badan Dalam Negeri">WP Badan Dalam Negeri</option>
+                                <option value="WP Orang Pribadi Dalam Negeri">WP Orang Pribadi Dalam Negeri</option>
+                                <option value="WPLN (Wajib Pajak Luar Negeri)">WPLN (Wajib Pajak Luar Negeri)</option>
+                            </select>
                         </div>
 
-                        <div class="sm:col-span-2">
-                            <label class="block text-xs font-semibold tracking-wide text-slate-500 mb-2">ALAMAT LENGKAP VENDOR</label>
-                            <input type="text" x-model="form.alamat" placeholder="Gedung Menara Sudirman Lt. 14, Jl. Jend. Sudirman Kav. 60, Jakarta Selatan"
+                        <div>
+                            <label class="block text-xs font-semibold tracking-wide text-slate-500 mb-2"
+                                x-text="isWpln ? 'TAX ID / TIN LUAR NEGERI' : 'NPWP VENDOR (15 / 16 DIGIT)'"></label>
+                            <input type="text" x-model="form.npwp"
+                                :placeholder="isWpln ? 'Contoh: US-987654321' : 'Contoh: 01.234.567.8-901.000'"
+                                class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm font-mono text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition" />
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold tracking-wide text-slate-500 mb-2">NEGARA DOMISILI</label>
+                            <input type="text" x-model="form.negara" placeholder="Contoh: Indonesia / Singapura"
                                 class="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition" />
                         </div>
                     </div>

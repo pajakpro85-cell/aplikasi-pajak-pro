@@ -26,7 +26,7 @@
             </header>
 
             {{-- ---- MAIN CONTENT (scroll vertikal saja) ---- --}}
-            <main class="flex-1 overflow-y-auto overflow-x-hidden px-8 py-6" x-data="eksporLaporanPage()">
+            <main class="flex-1 overflow-y-auto overflow-x-hidden px-8 py-6" x-data="eksporLaporanPage({{ Js::from($invoices ?? []) }})">
 
                 {{-- Page heading --}}
                 <div class="mb-6">

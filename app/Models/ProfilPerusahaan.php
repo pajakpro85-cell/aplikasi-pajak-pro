@@ -18,6 +18,11 @@ class ProfilPerusahaan extends Model
         'alamat',
         'nama_pejabat',
         'jabatan',
-        'metode_Default',
+        'metode_default',
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'id_perusahaan';
+    }
 }

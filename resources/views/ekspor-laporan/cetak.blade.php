@@ -13,7 +13,7 @@
         }
     </style>
 </head>
-<body class="bg-slate-100 min-h-screen py-10" x-data="cetakLaporanPdfPage()">
+<body class="bg-slate-100 min-h-screen py-10" x-data="cetakLaporanPdfPage({{ Js::from($invoices ?? []) }}, {{ Js::from($buyer ?? ['name' => '-']) }})">
 
     {{-- Toolbar (nggak ikut kecetak) --}}
     <div class="no-print max-w-4xl mx-auto mb-5 flex items-center justify-between px-4">
